@@ -1,16 +1,4 @@
-const Task = (props) => {
-    let { name, due } = props;
-
-    return (`
-    <div class="task">
-        <div class="task__body">
-          <div class="task__name">${name}</div>
-          <div class="task__due">${due}</div>
-        </div>
-        <div class="task__done">✓</div>
-      </div>
-    `)
-}
+import { Task } from "./Task/Task.js"
 
 fetch("https://apps.kodim.cz/daweb/trening-api/apis/tasks-api/tasks")
     .then((response) => {
