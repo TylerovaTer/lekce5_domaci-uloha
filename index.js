@@ -1,46 +1,34 @@
 import { Task } from "./Task/Task.js"
 
+const renderTask = (tasks) => {
+    let element = document.querySelector(".todo__tasks");
+    element.innerHTML = tasks
+        .map((task) => Task(task))
+        .join("");
+}
+
 fetch("https://apps.kodim.cz/daweb/trening-api/apis/tasks-api/tasks")
     .then((response) => {
         return response.json();
     })
-    .then((data) => {
-        let element = document.querySelector(".todo__tasks");
-        element.innerHTML = data
-            .map((task) => Task(task))
-            .join("");
-    });
+    .then((data) => { renderTask(data) });
 
+const checkbox = document.getElementById("checkbox-undone")
 
-let isChecked = true;
 const getUndo = () => {
-    if (isChecked === true) {
-        fetch("https://apps.kodim.cz/daweb/trening-api/apis/tasks-api/tasks")
+    if (checkbox.checked) {
+        fetch("https://apps.kodim.cz/daweb/trening-api/apis/tasks-api/tasks?done=false")
             .then((response) => {
                 return response.json();
             })
-            .then((data) => {
-                let element = document.querySelector(".todo__tasks");
-                element.innerHTML = data
-                    .filter((task) => task.done === false)
-                    .map((task) => Task(task))
-                    .join("");
-            });
-        isChecked = false;
+            .then((data) => { renderTask(data) });
     } else {
         fetch("https://apps.kodim.cz/daweb/trening-api/apis/tasks-api/tasks")
             .then((response) => {
                 return response.json();
             })
-            .then((data) => {
-                let element = document.querySelector(".todo__tasks");
-                element.innerHTML = data
-                    .map((task) => Task(task))
-                    .join("");
-            });
-        isChecked = true;
+            .then((data) => { renderTask(data) });
     }
-
 }
 
 document.getElementById("checkbox-undone").addEventListener("click", getUndo)
